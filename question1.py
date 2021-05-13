@@ -35,4 +35,4 @@ with open('gistfile1.txt') as fp:
 max_profit, index_max, index_min = get_max_profit(numbers)
 
 print("the maximum profit Jacky can make is: $" + str(max_profit) 
-        + ", he will buy at hour " + str(index_max) + " and sell at hour" + str(index_min))
+        + ", he will buy at hour " + str(index_min+1) + " and sell at hour " + str(index_max+1))

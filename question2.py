@@ -1,46 +1,57 @@
 import time
 
 
+def get_possible_arrangements(s):
+    # Find all unique char from string
+    unique_char = list(dict.fromkeys(s))
+    s = list(s)
+
+    temp_string = ""
+    possible_string = []
+
+    # Enumerate the second char of string to last
+    for i, char1 in enumerate(s[1:]):
+        if len(list(dict.fromkeys(temp_string))) > len(unique_char):
+            continue
+
+        initial = s[0]  # early string that will not be combined
+        temp_string += char1
+
+        # enumerate next chars to find the combination of possible words
+        for j, char2 in enumerate(s[i+2:]):
+            temp_string += char2
+
+            # possible word is the initial plus following chars (temp string)
+            # with length of unique_char
+            while len(temp_string) >= len(unique_char):
+                initial += temp_string[0]
+                temp_string = temp_string[1:]  # remove first char of temp_string
+
+            # check if possible unique words of initial plus temp string same as length of unique char
+            if len(list(dict.fromkeys(initial+temp_string))) == len(unique_char):
+                if char2 in initial:
+                    # remove same char in initial
+                    initial = initial.replace(char2, "")
+
+                target = "".join(list(dict.fromkeys(initial+temp_string)))
+                if target not in possible_string:
+                    # collect the possible unique words
+                    possible_string.append(target)
+            # print(i, initial, temp_string) # uncomment this line to find out the process work
+        # print(i)
+        temp_string = ""
+    
+    return possible_string
+
+
 start_time = time.time()
 s = "sfgxcllryzidycpfuvejapqflbgtdacwijgdemiyezmtpiewrycvupvhkajctvccsdvcibhkahrvimvvfhapgfmmhtjhvpqndagvigzzkhvcndjdgqwfgfwvqpndngiicpvbwmyvufptykxofduarmpsnparaqkvbcbejijbsogbzyhdqhtxnwcvnudvspndostnyhbbtuwwhimtanjuwgnqdajmqkrcoddsdvpuzzuvdovcqianfnsltwubuhguamzyzhiorxdjptxbaeuzsrllhnuktmfhckckupnmkkjvbgpesuborurxujaxutimnxoalrtholvlyreebetfvpeadnxvjwfioyzhzcqrfxvnjsykojotdchmpnuoflhaimcuqrfcxsukggerffseoqlxrzlssmfbiexrlfgsiwpyvryaqabqcgmgpmfvajwhediehtckksnzxcffsqjlnikktxndkxayullgrvtkhfywlofkhisytohrnelmqbnywywiceoqfgvplcxfuhdwmwvtizjajpmmbysgydfluzqptvkqiasnmvnecrtxhuumivebgyrqgtzchgbyljuvrmbzjfvjzzxtvdqmsdjpkdcjlcthchlhvvzlarhsxvlggyvccljdhxmlxmomealvwwrkffpbxxyuybcxqaluqvxsyhmlzyiyzvosvkejazhynawxeczxiixadtahbudjjcdqdgpcsztrjgfmqkcawqvexlbhwrntyyksackwqaqvjwzzlkijughjkbombpnhqzmuhjbsoxtehiuklnzkrrgghzzoypzduqlladuvfbywirlupdajybezhqvpgqwdwikuauyxbdtxqggwqzcimouqnpwoyqnocwvzdjfgaxqnirdkreegsvhginskcltjkvkvnaltllmuizlmfmljgteajvqwvzbijxrypkcluawaumbqsgxscodtrsqxnbtuexnidvpxpcgjojnfkerezodedalhzxpojgfypmqsgvljsxxxehdgztzmudylgpmagygtwkhwzfvicnswgirwqqdjarfkhkbbgbljrjkjfagbmlnzfkodkhuogaealgeuedqjqqzsiaiqztsszeqkdowasbcqjzurnlksbpcfqfxgkiumeruxzfegqeershjosxjudlfhvoonxmgvrrhpvkdrubvkzkchclfcvfkheqyekxthwzqvqsrxaoeczxnqruvvnhpbkzfmjzkjbjqbndxqroxmicfdyanycwmkcettxthhfkfyvjqnfcxyzqlbmdywiuvckcnykzklisknupynaforkoqnksrjoalsedgcanzswfwegcsblsbjrxagjvoboroseqbahmrvfagqtrtacpniqzahlpfnzcgfjaabpfpxvwcligovrysnuqzlcxhqnjaqhqfazkpmbognuctjdiutxaewutlushrybivenmhcaygulpgoiexgevyxjopzkhzdkgluliazklfgcqnoghzcicntyzwspldzlpefcvfvwathlubuzorvuprtscslicvgncjgkeygiqdgjpblruabetphjvzcpzechvmanvhvqzjdcxfitlcsyfglvdphmjphxzzhalwqxefveaqyiitljxxwcwbtquvexcsohjxcdzipwslruzdlftfaxievbuicwylvpionesysqhdkblmaldxqopjnbsgjwpkvbqzzuhbbvzyuukgjxlkkhnyklghgtexubsnnajfrmquumafjmokaxcdljjyyijytbcjelsdrhvwdwxmeecmwkyoifuacyseuocjfqbtfmyheemjbnerlntxiclvtiucxqsgrtbsukfojxkxnbvlaasmpaismblobuiwyzmfknvndoufgpeuygfqwdbxsofxnkkcnjxlefgkjkmdsedaokolasrycqvttxkiscjywvvttmtukzrpitpunpzpegpdtfnafirpqulwqauupubxhkuijjoiztrzuicexqzgtjdqtempuqsaxahbykfftxarqxokldaqvkkwfwsdtlhrcsxujwemhevwnyqvxyeurxbygsujahnnwivlrlxmuvlzrqvpreyqxgcvixrqxnrvcfdywwthflixcanxcsxgtuwfqvbskjchfijxziqkgbqglypzeshzisghbmmsewoqihfgerqljubxaqhyphvosvoxwzycxycsfcuevcldkeoquaphvngzqdvezfsxepdevmqumwshqhlnfmhehoirrowqxojiosieooarkgculfaeuuyaromizqsdbpbvoeaznpucoyhkkiqbeqwxcjpefqrxdsztdnsqmizbcomxbsoohorbaplqbztcasxuxtitcwyufjuwxjlhtlgwblyqseepfluqzrgychwtxjvwlgaqoxvjoqxitspmwfiyczenghtkmfszgrcncmwwrhepehgyxjkkjswnzkdlrdphqtncmzcivaemyncavbeceouqksslgohqsykgyjasdissflvgkdrtmksdkpluveozecxfmvmmjbspfketkohiagsswixvaajonrgvwwjaaralocbjdcohfwmmcwtcwvtehpgtpobcnwnncmbimxzrdexqbjgpqbzqtklqkuhflkcpquuaartktsukdjhdvpttafthijuxnqcpddvuovzjenqqilmfdpclydexmwfjufssciaiswnppotngsbtbfgsdairxqhnhumktxfaqnfqubjwlshkoviitkspzdtjxlvpzmifxthmyqvunztxrbjqnburmcrsqsjvjzrzxmsgtlwiwgxhnhyjibsqdpufkxujytzeoptjnebjyevcuyfknkhifgstytkfuphrlryrascxnqidoahcqoltalslzxaeueqzvbrcvkummjszbwsmtjhngcipxijrugidwgoyjqtppxdwwvfoibkrszpawtbihxoyqyaahglyilvcnekgnjqsbgpztjxuyronnclycwieinrhcpxwcgfpstmweajtnaeakjmgahihfowgisgfbbbhuouuctqvfwybiyljrabmmkkcgllefermscerwmhuuykmvvshhqtqjpnmzmugcyivutcufnnprppsclrpvybintckuddppqslbozsbjcpmjthkkusmsdediacqmjgvwvvjovexvgywrxquifsjpfndzdamlinkpfurtxwvqxjmzuhfhsekgwzmfvtgefavuondfdfpctpdtbjiapjcrsyvqbcvhroxktjsposdamiljnlcfimekudsmygyakiwqnlseyifeleellftntuyyqpwfrkcmfxpavwqowiuasedjllykhapqjkwushszcbxtdbywzxeioxmgrmbzhwkbfjczntowoplbyjjwfbvtbmqqipcljlznbxnywlovqofacqcmfzlzkichqeujzajvnakxooythxttmcrwjxhkvgandktwzrubbdjtgsbwlewtputxqqndyoiplphsjhvextlwpcinodqftzgzwhgpockcyixkmskdcnbquoaxtkdfditdtozqebrzpfcxtgiumybagfqrfreahioptqwnrjukvpqdkfefoxuoqaqjdjqadgsuqnwnrbqbwmkepeqfwiauvvttrvnfwxhwyuwicqlnofhpgqdiafhomjikbdesrmksqvpyoxxqrkffvbhtgsdetzfaskgyvwycjfkeoligeqbxcssasvvqwpkgknbocelzwfjntwesmrkguleedjuvskfymdzzmbwyqachahwuhxxysnpyttvsoyitoavegmdzocfcvbuhbwguktwxuimexsafdschbtftivuoiqsjfuzlbtvzurzabmzbrddkvmniyceowaappcsmllfmvgsjhmdxfjlpgyjfhrqlbzsntjafzvxagqryuirstsqheqwdvuovwtgcnwoiiygjywyhljdmsojpntjhhhvhgsinbdtibmemshhnhsnbnbyvkdhxanhtfmgptswxpbxflfaviepkaezmlszreovtyrkzjnublyswbaiojsniawldulvknkpowpuplwklmaqnllxhvvfzyygwdhcivpequessyogugsdoiydsnlzxspjmhxbshiadicxsdirsrctzqqpfyntyadgdtmxyeryflmekumwwhzbiryjksoyjopzapngxjqyvstgpujawekrtbdnejjnvuxsmsgyslnwbhxajtrwvxkrrxxsqqsvykbdkcdtfxpzivolohvwovbyklxlccaceexrwlohryvafwbqagizctzeopkaoojgpociafslpddkfvokhzfrdzfzpoghbvztrkzeztoimksjxginjdmcogpniowavosomrltjfwjawesbihodozycftmtmeukkurqvkhqpthxgtpmcwwgxplintjkuinxtmlmlctfuwzpwygeepuhibrmtrskhofhotqkvbmbkoazkwebnotnutsearaqqqyfhfpfgzthmvtrzttoubqrffejjsrrricazjanrzaxlzvsqdsgbhtsvjcmubndbbnmqmiqeeiucmkkbhkhdjqetlogspjejbgywyhpgfhqlxlhaxbkaohplfvmdsqaerwjlifzreuzflbcehthnjmnkcxfcqqopohvrbhyecdqkvpofglyssumszmrvwghtqtknyywxmbhketgcqhzwezdmtbfdylibpmmhmhnhjrhbugwcdfswgllculmskscpwglodnnsjzxdfchvesatcjkkiwfnwbhdjimwagmmqtakxrqhefuuvvcjjtuofqanrrnucztkzhfsagvufrmqfcfybbtxouncqdndezxrvfdlbyurfgjwrtmtxndjjwogpxcycoqkvxzubcwqufytgjslhlqdfjacyykcrclgciwbiwdgmsddrkmkgcgpdxssjvqvwdfbnvjrreohsqfcmpdqwpruvgyopsjjkaylnneelonktxcorwpjenqqtwwnensyszxziwcqjdmyqaawtyuhvfwzggkywrjhesefumhuxlaphvyeobinkngrpkiqyteonwjbwhogdgubuaduogvvsnukwssrouarajrpajdhajyiehwhviocbagartrfyddhylgbipfhqrswndkawdkeakmsnfvjvpjpnduoiyycdfwmhmwlvudoxfrgruythwfocglonvzwpcgtyyhumggsqqoofyyefevlcsltcbazbedyreqnfbzbxmsyyqkgtocejpjgsrvzvaqqimmxeilonvvdjlpviwephpfoqoiqbxakkosyzvdrfvukadltxlaywzhxqjrxqgqdjiamazvtxbfqrjwoflhvrohnbgpcsjgahunthgfssltdcwhabwckqjwlewayyzfotezklirhcestltpgfhleqsauoudpfdelcisyknhanhtdavmitpqrijlzeigepxeszvkgsltqeshhzkbjyifrqsjpkflcwgiyfirladuqedfkhhtgvmqhynacsiwfxicfsxslboqmcairuomrlohppnrprgjtroyjvsdhvgeyqkuuqgphumyvmxfygjftgwjdlymaqauggfnrigblllyfkatywglxolavtojktndjcinaqzvvzhzdyciidlfceeozwpoxmjvbbdvikltrxbhyrargwwzqouufjwiqsawrmhpodbeuhcuimpwhawxvdfanfrbcgjutjyzvuihrtczxnyxcehfdcyskzblktrwqvejemshphbysykkkcyipwyuzlhoztdbkigcoavkfpeedplykxbuphkjpfecmfkjltloclkxdbfwslfhbjqrtgkvvxxnqyrlzwiyvxprhvnbjyvafepzauabjioteotsjvvueucoibulddibhjadlkpwdnrfxtivgplbnercecmpsgfxnufnaykeulrsijvkhexdomrdlxkuzgngliiezswxsgcssgrxzchxkcgyjgzkmkphcybosobmsrztiaobaptwlljecyijxpaatdemhyepclesqkkrniwdrziilbffsmvdpvhdmqcdjnpxjzmaqlimbsgemsvyyidzcwbtztuuchmewibzvzdobmrxleylcavahkrqnfyyutelgenmenxpgojvgzhgjfzwwlgysdzwguejktrjrtptcujvmiwowqbgpcgxxrunkahdrkfwudllozrxcgbtoqmelxejmlcivyotgyigngrekjlbhsrinetskgkpgohfeuhsrqorkfkffekgmxsgeicnjsnnzlwtutamezratyrwufzlniqymrwudbhzerezshxgul"
 # s = "sebaerbaaaaaaaacs"
+# s = "sebaerb"
 
-# Find all unique char from string
-unique_char = list(dict.fromkeys(s))
-s = list(s)
+possible_string = get_possible_arrangements(s)
+possible_string_lexOrder = sorted(possible_string)
 
-temp_string = ""
-possible_string = []
-
-# Enumerate the second char of string to last
-for i, char1 in enumerate(s[1:]):
-    if len(list(dict.fromkeys(temp_string))) > len(unique_char):
-        continue
-
-    initial = s[0] # early string that will not be combined
-    temp_string += char1
-
-    # enumerate next chars to find the combination of possible words
-    for j, char2 in enumerate(s[i+2:]):
-        temp_string += char2
-
-        # possible word is the initial plus following chars (temp string)
-        # with length of unique_char
-        while len(temp_string) >= len(unique_char):
-            initial += temp_string[0]
-            temp_string = temp_string[1:] # remove first char of temp_string
-        
-        # check if possible unique words of initial plus temp string same as length of unique char
-        if len(list(dict.fromkeys(initial+temp_string))) == len(unique_char): 
-            if char2 in initial:
-                initial = initial.replace(char2, "") # remove same char in initial
-
-            target = "".join(list(dict.fromkeys(initial+temp_string)))
-            if target not in possible_string:
-                possible_string.append(target) # collect the possible unique words
-        # print(i, initial, temp_string) # uncomment this line to find out the process work
-    print(i)
-    temp_string = ""
-
-print(sorted(possible_string))
+print(possible_string_lexOrder)
+print("First occurence from left to right :", possible_string_lexOrder[len(possible_string_lexOrder)-1])
 print("--- %s seconds ---" % (time.time() - start_time))
