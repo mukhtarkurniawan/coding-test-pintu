@@ -75,7 +75,7 @@ of s string that has 6000 length of character, it consumes a lot of memory.
 Even my code still can't find all combination, but it can find the smallest
 lexicographical order. Well it seems that in few cases my code still guessing
 it wrong because the problem for finding all the combination. 
-And I hope that first lexicographical order of string s 
+And I just hope the correct first lexicographical order of string s 
 that has 6000 length of character is 'abcgpvjwdzxkyulrthfoisnemq'
 
 """
